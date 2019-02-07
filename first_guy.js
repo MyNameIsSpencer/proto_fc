@@ -4,15 +4,6 @@ var ctx = canvas.getContext("2d");
 var bg = new Image();
 bg.src = './BrownBg.png';
 
-console.log(canvas.height);
-console.log(bg.style.width);
-
-
-//
-// sprImage.src = './legi/Combo Proto-01-01.png';
-// sprImage.onload = function(){
-//   ctx.drawImage(sprImage, sprX, sprY);
-// }
 
 
 
@@ -20,17 +11,20 @@ console.log(bg.style.width);
 
 var sprX = 100;
 var sprY = 100;
-var walkValue = 2;
+var walkValue = 1;
 var sprAnimCounter = 0;
 
-var stun = false;
+var hp = 100;
+var sprStun = false;
 var attacking = false;
+var orientation = 'right';
+
+
 var leftPressed = false;
 var rightPressed = false;
 var upPressed = false;
 var downPressed = false;
 
-var orientation = 'right';
 
 
 
@@ -45,6 +39,12 @@ function keyDownHandler(e) {
   // if(e.key == "a" || e.key == "KeyA") {
   //
   // }
+
+  if (e.key == 't') {
+    sprStun = true;
+    console.log('timeout stunned');
+    setTimeout( () => sprStun = false, 800);
+  }
 
   if(e.key == "Left" || e.key == "ArrowLeft") {
     leftPressed = true;
@@ -75,28 +75,28 @@ function keyUpHandler(e) {
 
 
 function renderSprAnim() {
-  // if(sprStun == true) {
-  //   renderStun();
-  // } else if() {
+  if (hp <= 0) {
+    renderDeath();
+  } else if (sprStun) {
+    renderStun();
+  }
+  // else if() {
   //   renderAttack();
   // } else if() {
   //   renderShove();
   // } else if() {
   //   renderDefence();
   // } else if() {
-  if (leftPressed || rightPressed || upPressed || downPressed) {
+  else if (leftPressed || rightPressed || upPressed || downPressed) {
     renderWalk();
   } else {
     renderStand();
-  } //else if() {
-  //   renderDeath();
-  // }
+  }
 }
 
 
 function changeImages (times, images) {
   let sprImage = new Image();
-  console.log(sprAnimCounter);
 
   if (sprAnimCounter >= times[times.length - 1]) {
     sprAnimCounter = 0;
@@ -111,6 +111,19 @@ function changeImages (times, images) {
   }
 
   ctx.drawImage(sprImage, sprX, sprY);
+}
+
+function renderDeath () {
+  console.log('You dead, please restart');
+}
+
+function renderStun () {
+  let sprImage = new Image();
+  if (orientation === 'left') { sprImage.src = './legi/Combo Proto-10-00.png';
+} else { sprImage.src = './legi/Combo Proto-09-00.png'; }
+
+  ctx.drawImage(sprImage, sprX, sprY);
+  console.log('You are stunned');
 }
 
 function renderWalk () {
