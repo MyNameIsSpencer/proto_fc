@@ -2,11 +2,21 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var bg = new Image();
-bg.style.backGround = "brown";
-bg.style.width = `${canvas.width}`;
-bg.style.height = `${canvas.height}`;
+bg.src = './BrownBg.png';
+
 console.log(canvas.height);
 console.log(bg.style.width);
+
+
+//
+// sprImage.src = './legi/Combo Proto-01-01.png';
+// sprImage.onload = function(){
+//   ctx.drawImage(sprImage, sprX, sprY);
+// }
+
+
+
+
 
 var sprX = 100;
 var sprY = 100;
@@ -86,7 +96,7 @@ function renderSprAnim() {
 
 function changeImages (times, images) {
   let sprImage = new Image();
-console.log(sprAnimCounter);
+  console.log(sprAnimCounter);
 
   if (sprAnimCounter >= times[times.length - 1]) {
     sprAnimCounter = 0;
@@ -100,9 +110,7 @@ console.log(sprAnimCounter);
     }
   }
 
-  sprImage.onload = function(){
-    ctx.drawImage(sprImage, sprX, sprY);
-  }
+  ctx.drawImage(sprImage, sprX, sprY);
 }
 
 function renderWalk () {
@@ -148,27 +156,18 @@ function renderWalk () {
 function renderStand() {
   let sprImage = new Image();
   sprImage.src = './legi/Combo Proto-01-01.png';
-  sprImage.onload = function(){
-    ctx.drawImage(sprImage, sprX, sprY);
-  }
+  ctx.drawImage(sprImage, sprX, sprY);
 }
-
-
-// if press left sprX decrease and use left walk, if press right sprX increase right walk
-// if up sprY decrease(goes up) use right walk, but up and left use left walk
-// if straight down use sprY increase(goes down) use left walk
-
-
 
 
 
 
 function draw() {
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(bg,0,0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // ctx.drawImage(bg,0,0);
 
   renderSprAnim();
+  requestAnimationFrame(draw);
 }
 
-
-setInterval(draw, 10);
+draw();
